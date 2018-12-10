@@ -14,4 +14,5 @@ yarn-error.log
 .env
 .docker
 .phpintel
+/public/
 .phpunit.result.cache
