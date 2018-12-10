@@ -27,4 +27,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getAvatarUserAttribute()
+    {
+        if ($this->avatar) {
+            return config('site.user.display-image') . $this->avatar;
+        }
+        return config('site.avatar-default');
+    }
+
+    public static function scopeGetUsers($query)
+    {
+        return $query->orderBy('id', 'DESC');
+    }
 }
