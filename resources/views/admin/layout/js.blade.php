@@ -26,5 +26,6 @@
 <script src="bower_components/lb-template/js/plugins/chartJs/Chart.min.js"></script>
 <!-- Toastr -->
 <script src="bower_components/lb-template/js/plugins/toastr/toastr.min.js"></script>
+<script src="bower_components/lb-template/js/plugins/dataTables/datatables.min.js"></script>
 <script src="js/app.js"></script>
   
