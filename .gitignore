@@ -16,3 +16,4 @@ yarn-error.log
 .phpintel
 /public/
 .phpunit.result.cache
+/public/bower_components
