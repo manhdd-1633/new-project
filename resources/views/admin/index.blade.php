@@ -6,17 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>INSPINIA | Dashboard</title>
     <base href="{{ asset('') }}">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    {{-- <link href="css/font-awesome.css" rel="stylesheet"> --}}
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <!-- Toastr style -->
-    <link href="css/toastr.css" rel="stylesheet">
-    <!-- Gritter -->
-    <link href="css/jquery.gritter.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+   @include('admin.layout.css')
 </head>
 <body>
     <div id="wrapper">
