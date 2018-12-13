@@ -34,22 +34,40 @@ abstract class EloquentRepository implements RepositoryInterface
         return $this->_model->create($attributes);
     }
     
-    public function update($id, array $attributes)
+    public function update(array $attributes, $id)
     {
         $result = $this->find($id);
         if ($result) {
             $result->update($attributes);
+
             return $result;
         }
+
         return false;
     }
+    
     public function delete($id)
     {
         $result = $this->find($id);
         if ($result) {
             $result->delete();
+
             return true;
         }
+
         return false;
+    }
+
+    public function paginate($perPage = null, $columns = ['*'])
+    {
+        $numPosts = $perPage ?? config('database.paginate');
+
+
+        return $this->_model->paginate($numPosts, $columns = ['*']);
+    }
+
+    public function findOrFail($id, $columns = ['*'])
+    {
+        return $this->_model->findOrFail($id, $columns);
     }
 }

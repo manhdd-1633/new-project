@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Alert;
+use Exception;
 use App\Repositories\InterfaceRepository\UserRepositoryInterface;
 
 class UserController extends Controller
@@ -23,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
         $getUsers = $this->userRepository->getAll();
-
+        
         return view('admin.user.index', compact('getUsers'));
     }
 
@@ -34,7 +37,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.add');
     }
 
     /**
@@ -45,7 +48,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->only('name', 'email','password', 'avatar', 'address', 'phone', 'status');
+
+           if ($request->hasFile('avatar')) {
+                $request->avatar->store(config('site.user.image'));
+
+                $data['avatar'] = $request->avatar->hashName();
+            }
+
+            $this->userRepository->create($data);
+
+            return redirect()->route('user.index');
+
+        } catch (Exception $e) {
+
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -67,7 +87,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $editUser = $this->userRepository->find($id);
+
+        return view('admin.user.edit', compact('editUser'));
     }
 
     /**
@@ -79,7 +101,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $updateUser = $this->userRepository->find($id);
+
+            $data = $request->only('name', 'email', 'avatar', 'address', 'phone', 'status');
+            if ($request->hasFile('avatar')) {
+                Storage::delete(config('site.user.image') . $updateUser->avatar);
+                $request->avatar->store(config('site.user.image'));
+                $data['avatar'] = $request->avatar->hashName();
+            }
+        
+            $this->userRepository->update($data, $id);
+
+            return redirect()->route('user.index'); 
+        } catch (Exception $e) {
+            
+            return redirect()->back();
+        }
     }
 
     /**
@@ -90,6 +128,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = $this->userRepository->delete($id);
+
+        return response()->json($data);
     }
+
 }

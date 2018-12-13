@@ -24,6 +24,8 @@ class UsersTableSeeder extends Seeder
                 'name' => 'admin',
                 'Password' => bcrypt('123456'),
                 'email' => 'admin@gmail.com',
+                'address' => 'So 10 - Pham Hung - Nam Tu Liem - Ha Noi',
+                'phone' => '0798858822',
                 'status' => 1,
             ]
         );

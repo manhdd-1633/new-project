@@ -164,6 +164,10 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
         'Barryvdh\Debugbar\ServiceProvider',
+        Tightenco\Ziggy\ZiggyServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        //********* package user translate in to file js ***************
+        Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -230,6 +234,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Debugbar' => 'Barryvdh\Debugbar\Facade',
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 
 
     ],

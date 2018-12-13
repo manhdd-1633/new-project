@@ -26,6 +26,6 @@ Route::get('admin/logOut', 'Admin\LoginController@logOut')->name('logOut');
 Route::group(['prefix' => 'admin'], function () {
 	Route::get('dashboard', 'Admin\LoginController@index')->name('dashboard');
 
-	Route::resource('profile', 'Admin\ProfileController');
+	// Route::resource('profile', 'Admin\ProfileController');
 	Route::resource('user', 'Admin\UserController');
 });

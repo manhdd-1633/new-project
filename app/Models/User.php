@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Hash;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -16,7 +17,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 
+        'email',
+        'password',
+        'avatar',
+        'address',
+        'phone',
+        'status',
     ];
 
     /**
@@ -39,5 +46,10 @@ class User extends Authenticatable
     public static function scopeGetUsers($query)
     {
         return $query->orderBy('id', 'DESC');
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
     }
 }
