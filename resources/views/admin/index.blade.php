@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>INSPINIA | Dashboard</title>
-    <base href="{{ asset('') }}">
+    @routes()
    @include('admin.layout.css')
 </head>
 <body>
@@ -28,5 +29,10 @@
         <!-- Mainly scripts -->
     </div>
     @include('admin.layout.js')
+    
+    @yield('js')
+
+    @include('sweetalert::alert')
+    
 </body>
 </html>

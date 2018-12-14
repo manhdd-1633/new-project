@@ -2,7 +2,7 @@
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>Profile</h2>
+        <h2>Dasboard</h2>
         <ol class="breadcrumb">
             <li class="active">
                 <a href="{{ route('dashboard') }}">Home</a>
