@@ -1,63 +1,91 @@
 $(document).ready(function(){
 
-    var $image = $(".image-crop > img")
-    $($image).cropper({
-        aspectRatio: 1.618,
-        preview: ".img-preview",
-        done: function(data) {
-            // Output the result data for cropping image.
+let dropArea = document.getElementById("drop-area");
+
+// Prevent default drag behaviors
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, preventDefaults, false)   
+  document.body.addEventListener(eventName, preventDefaults, false)
+});
+
+// Highlight drop area when item is dragged over it
+['dragenter', 'dragover'].forEach(eventName => {
+  dropArea.addEventListener(eventName, highlight, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, unhighlight, false);
+});
+
+// Handle dropped files
+dropArea.addEventListener('drop', handleDrop, false);
+
+function preventDefaults (e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+function highlight(e) {
+  dropArea.classList.add('highlight');
+}
+
+function unhighlight(e) {
+  dropArea.classList.remove('active');
+}
+
+function handleDrop(e) {
+  var dt = e.dataTransfer;
+  var files = dt.files;
+
+  handleFiles(files);
+}
+
+function previewFile(file) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.onloadend = function(e) {
+        let myfile = e.target.result;
+        let ext = myfile.split(';');
+        let ext2 = ext[0].split('/');
+        if(ext2[1] == "jpg" || ext2[1] == "png" || ext2[1] == "jpeg"){
+            $('#avatar-review').attr('src', ''+ e.target.result +'');
+            $('#avatar-review').hide();
+            $('#avatar-hidden').attr('value', e.target.result);
+            $('#avatar-review').fadeIn(650);
+        } else{
+            Swal(
+                    'Invalid data ?',
+                    'Invalid input file ?',
+                    'question'
+                )
         }
-    });
+        
+  }
+}
 
-    var $inputImage = $("#inputImage");
-    if (window.FileReader) {
-        $inputImage.change(function() {
-            var fileReader = new FileReader(),
-                    files = this.files,
-                    file;
-            if (!files.length) {
-                return;
-            }
-            file = files[0];
-            if (/^image\/\w+$/.test(file.type)) {
-                fileReader.readAsDataURL(file);
-                fileReader.onload = function () {
-                    // $inputImage.val('');
-                    $image.cropper("reset", true).cropper("replace", this.result);
-                };
-            } else {
-                showMessage("Please choose an image file.");
-            }
-        });
-    } else {
-        $inputImage.addClass("hide");
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#avatar-review').attr('src', ''+e.target.result +'');
+            $('#avatar-review').hide();
+            $('#avatar-review').fadeIn(650);
+        }
+        reader.readAsDataURL(input.files[0]);
     }
+}
 
-    $("#download").click(function() {
-        window.open($image.cropper("getDataURL"));
-    });
+$("#fileElem").change(function() {
+    readURL(this);
+});
 
-    $("#zoomIn").click(function() {
-        $image.cropper("zoom", 0.1);
-    });
+function handleFiles(files) {
+    files = [...files];
+    // files.forEach(uploadFile);
+    files.forEach(previewFile)
+}
 
-    $("#zoomOut").click(function() {
-        $image.cropper("zoom", -0.1);
-    });
-
-    $("#rotateLeft").click(function() {
-        $image.cropper("rotate", 45);
-    });
-
-    $("#rotateRight").click(function() {
-        $image.cropper("rotate", -45);
-    });
-
-    $("#setDrag").click(function() {
-        $image.cropper("setDragMode", "crop");
-    });
-    
-    var elem_3 = document.querySelector('.js-switch_3');
-    var switchery_3 = new Switchery(elem_3, { color: '#1AB394' });
+var elem_3 = document.querySelector('.js-switch_3');
+var switchery_3 = new Switchery(elem_3, { color: '#1AB394' });
 
 });

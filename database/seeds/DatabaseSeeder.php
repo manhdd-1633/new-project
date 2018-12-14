@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use App\Models\User;
+use App\Models\Role;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -11,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UsersTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
     }
 }
 
@@ -31,3 +32,21 @@ class UsersTableSeeder extends Seeder
         );
     }
 }
+
+class RolesTableSeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('roles')->insert([
+            ['name' => 'Super-Admin', 'display_name' => 'Super Admin'],
+            ['name' => 'Administrator', 'display_name' => 'Administrator'],
+            ['name' => 'Editor', 'display_name' => 'Editor'],
+            ['name' => 'Author', 'display_name' => 'Author'],
+            ['name' => 'Contributor', 'display_name' => 'Contributor'],
+            
+
+
+        ]);
+    }
+}
+

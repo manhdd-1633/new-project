@@ -38,6 +38,7 @@
                             <th>{{ trans('config.email') }}</th>
                             <th>{{ trans('config.address') }}</th>
                             <th>{{ trans('config.phone') }}</th>
+                            <th>{{ trans('config.role') }}</th>
                             <th>{{ trans('config.status') }}</th>
                             <th>{{ trans('config.action') }}</th>
                         </tr>
@@ -53,6 +54,13 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->address }}</td>
                                     <td>{{ $user->phone }}</td>
+                                    <td>
+                                        @foreach ($user->roles as $role)
+                                            <span class="badge badge-primary">
+                                                {{ $role->name }}
+                                            </span>
+                                        @endforeach
+                                    </td>
                                     <td class="center">
                                         @if ($user->status == 1)
                                             <button class="btn btn-info btn-circle disabled" type="button">
@@ -65,8 +73,10 @@
                                         @endif
                                     </td>
                                     <td class="center">
-                                        <a class="btn btn-primary btn-rounded" href="{{ route('user.edit', $user->id) }}">{{ trans('config.edit') }}</a>
-                                        <button class="btn btn-warning btn-circle btn-md user-delete" id = "{{ $user->id }}" type="button">
+                                        <a class="btn btn-primary btn-circle" href="{{ route('user.edit', $user->id) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title=" Edit Users !">
+                                            <i class="fa fa-pencil" data-unicode="f040"></i>
+                                        </a>
+                                        <button class="btn btn-warning btn-circle btn-md user-delete" id = "{{ $user->id }}" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Users">
                                             <i class="fa fa-times"></i>
                                         </button>
                                     </td>

@@ -21,12 +21,14 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox-content">
-                {!! Form::open(['method' => 'PUT', 'route' => ['user.update', $editUser->id ], 'files' => true, 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['method' => 'PUT', 'route' => ['user.update', $editUser->id ], 'files' => true, 'class' => 'form-horizontal myForm', 'id' => 'myForm']) !!}
+                    {!! Form::hidden('id', $editUser->id) !!}
                     <div class="col-lg-6">
                         <div class="form-group">
                         {!!   htmlspecialchars_decode( Form::label('User Name', null, [ 'class' => 'col-sm-2 control-label'])) !!}
                         <div class="col-sm-8">
                             {!!  Form::text( 'name', $editUser->name ?? ' ',[ 'placeholder' => 'Enter User Name','class' =>'form-control', 'required'=>'' ])  !!}
+                            <span class="text-danger">{{ $errors->first('name') }}</span>
                             <span class="help-block m-b-none"> * {{ trans('config.note_name') }}.</span>
                         </div>
                         </div>
@@ -35,16 +37,32 @@
                             {!!   htmlspecialchars_decode( Form::label('Email', null, [ 'class' => 'col-sm-2 control-label'])) !!}
                             <div class="col-sm-8">
                                 {!!  Form::email('email', $editUser->email ?? ' ', [ 'placeholder' => 'Enter email','class' =>'form-control', 'required'=>'' ])  !!}
+                                <span class="text-danger">{{ $errors->first('email') }}</span>
                                 <span class="help-block m-b-none"> * {{ trans('config.note_mail') }}.</span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            {!!   htmlspecialchars_decode( Form::label( 'Avatar', null, [ 'class' => 'col-sm-2 control-label'])) !!}
+                            <div id="drop-area" class="col-sm-8">
+                                <p>{{ trans('config.drag_images') }}</p>
+                                <div class="fallback">
+                                    {!! Form::file('avatar', ['id' => 'fileElem', 'accept' => 'image/*'])  !!}
+                                </div>
+                                <label class="button" for="fileElem">{{ trans('config.uploadNewImage') }}</label>
+                                <div id="gallery">
+                                    {!! Html::image(asset($editUser->avatarUser) ?? ' ', '', ['id' => 'avatar-review', 'accept' => 'image/*']) !!}
+                                    {!! Form::hidden('avatar', '', ['id' => 'avatar-hidden']) !!}
+                                </div>
+                            </div>  
+                        </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                         {!!   htmlspecialchars_decode( Form::label('Address', null, [ 'class' => 'col-sm-2 control-label'])) !!}
                         <div class="col-sm-8">
                             {!!  Form::text( 'address', $editUser->address ?? ' ',[ 'placeholder' => 'Enter address','class' =>'form-control', 'required'=>'' ])  !!}
+                            <span class="text-danger">{{ $errors->first('address') }}</span>
                             <span class="help-block m-b-none"> *  {{ trans('config.note_address') }}.</span>
                         </div>
                         </div>
@@ -52,11 +70,25 @@
                         <div class="form-group">
                             {!!   htmlspecialchars_decode( Form::label('Phone', null, [ 'class' => 'col-sm-2 control-label'])) !!}
                             <div class="col-sm-8">
-                                {!!  Form::text('phone', $editUser->phone ?? ' ', [ 'placeholder' => 'Enter phone','class' =>'form-control', 'required'=>'' ])  !!}
+                                {!!  Form::number('phone', $editUser->phone ?? ' ', [ 'placeholder' => 'Enter phone','class' =>'form-control', 'required'=>'' ])  !!}
+                                <span class="text-danger">{{ $errors->first('phone') }}</span>
                                 <span class="help-block m-b-none"> *{{ trans('config.note_phone') }}.</span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            {!!   htmlspecialchars_decode( Form::label('Role', null, [ 'class' => 'col-sm-2 control-label'])) !!}
+                            <div class="col-sm-8">
+                                {!! Form::select('',$roles, null, ['class' => 'form-control m-b', 'id' => 'list_role_edit', 'placeholder' => '----------- roles - options -------------' ]) !!}
+                                <p id="add_list">
+                                    @foreach ($roleList as $role)
+                                        <span class="badge badge-primary" name="list_role" id="{{ $role->id }}">{{ $role->name }} <i class="fa fa-times delete_role" data-unicode="f00d"></i></span>&#32;
+                                    @endforeach
+                                </p>
+                                <span class="help-block m-b-none"> * {{ trans('config.note_role') }}.</span>
+                            </div>
+                            {!!  Form::hidden( 'role_id','' )  !!}
+                        </div>
                         <div class="form-group">
                             {!!   htmlspecialchars_decode( Form::label( 'Status', null, ['class' => 'col-sm-2 control-label'])) !!}
                             <div class="col-sm-8">
@@ -64,49 +96,15 @@
                                 <span class="help-block m-b-none"> * {{ trans('config.note_status') }}.</span>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
                     </div>
-                    <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="image-crop">
-                                    {!!  Html::image($editUser->avatar ? $editUser->avatarUser : config('site.avatar-default'))  !!}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                  <h4>{{ trans('config.previewImage') }}</h4>
-                                <div class="img-preview img-preview-sm"></div>
-                                <p>
-                                   {{ trans('config.positionImage') }}
-                                </p>
-                                <div class="btn-group">
-                                    <label title="Upload image file" for="inputImage" class="btn btn-primary">
-                                          {{ trans('config.uploadNewImage') }}
-                                    </label>
-                                       {!! Form::file('avatar', ['class' => 'hide', 'accept' => 'avatar/*', 'id' => 'inputImage']) !!}
-                                </div>
-                                <p>
-                                     {{ trans('config.set_of_options') }}
-                                </p>
-                                <div class="btn-group">
-                                    {{ Form::button('Zoom In ', ['class' => 'btn btn-white', 'id' => 'zoomIn']) }}
-                                    {{ Form::button('Zoom Out ', ['class' => 'btn btn-white', 'id' => 'zoomOut']) }}
-                                    {{ Form::button('Rotate Left ', ['class' => 'btn btn-white', 'id' => 'rotateLeft']) }}
-                                    {{ Form::button('Rotate Right ', ['class' => 'btn btn-white', 'id' => 'rotateRight']) }}
-                                    {{ Form::button('New crop ', ['class' => 'btn btn-warning', 'id' => 'setDrag']) }}
-                                </div>
-                            </div>
+                    <div class="ibox float-e-margins"></div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            {{ Form::button('Cancel ', ['class' => 'btn btn-white']) }}
+                            {{ Form::submit('Save ', ['class' => 'btn btn-primary']) }}
                         </div>
                     </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        {{ Form::button('Cancel ', ['class' => 'btn btn-white']) }}
-                        {{ Form::submit('Save ', ['class' => 'btn btn-primary']) }}
-                    </div>
-                </div>
                 {!! Form::close() !!}
             </div>
         </div>
