@@ -17,3 +17,4 @@ yarn-error.log
 /public/
 .bowerrc
 .phpunit.result.cache
+.circleci

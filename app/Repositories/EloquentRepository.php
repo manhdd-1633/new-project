@@ -70,4 +70,19 @@ abstract class EloquentRepository implements RepositoryInterface
     {
         return $this->_model->findOrFail($id, $columns);
     }
+
+    public function pluck($value = null, $key = null)
+    {
+        if (!$value) {
+            return null;
+        }
+        $lists = $this->_model->pluck($value, $key);
+        
+        if (is_array($lists)) {
+            
+            return $lists;
+        }
+
+        return $lists->all();
+    }
 }

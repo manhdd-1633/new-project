@@ -5,18 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Storage;
 use Alert;
+use DB;
+use File;
 use Exception;
 use App\Repositories\InterfaceRepository\UserRepositoryInterface;
+use App\Repositories\InterfaceRepository\RoleRepositoryInterface;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
     protected $userRepository;
+    protected $roleRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct( UserRepositoryInterface $userRepository, RoleRepositoryInterface $roleRepository)
     {
         $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
     }
     /**
      * Display a listing of the resource.
@@ -25,8 +32,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $getUsers = $this->userRepository->getAll();
-        
+        $getUsers = $this->userRepository->load('roles');
+  
         return view('admin.user.index', compact('getUsers'));
     }
 
@@ -37,7 +44,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.add');
+        $roles = $this->roleRepository->pluck('name', 'id');
+
+        return view('admin.user.add', compact('roles', 'roleList'));
     }
 
     /**
@@ -46,26 +55,42 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         try {
-            $data = $request->only('name', 'email','password', 'avatar', 'address', 'phone', 'status');
+            $data = $request->all();
+           
+           if ($request->avatar) {
 
-           if ($request->hasFile('avatar')) {
+                if ($request->hasFile('avatar')) {
                 $request->avatar->store(config('site.user.image'));
+                $data[ 'avatar' ] = $request->avatar->hashName();
 
-                $data['avatar'] = $request->avatar->hashName();
+               }else {
+                    $img_avatar = $request->avatar;
+                    $result = $this->userRepository->ImageUpdate($img_avatar);
+                    $data['avatar'] =  $result;
+
+                }
+           }
+            $users = $this->userRepository->create($data);
+
+            $userId = $this->userRepository->findOrFail($users->id);
+
+            if ($request->role_id) {
+                $arrayRole = rtrim($request->role_id, ',');
+                $check = explode(',', $arrayRole);
+                $userId->roles()->attach($check);
             }
-
-            $this->userRepository->create($data);
+            Alert::success(trans('config.successfully'), trans('config.addSuccess'));
 
             return redirect()->route('user.index');
 
-        } catch (Exception $e) {
+        } 
+        catch (Exception $e) {
 
             return redirect()->back();
         }
-
     }
 
     /**
@@ -76,7 +101,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -88,8 +113,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $editUser = $this->userRepository->find($id);
-
-        return view('admin.user.edit', compact('editUser'));
+        $roleList = $editUser->roles;
+        $roles = $this->roleRepository->pluck('name', 'id');
+      
+        return view('admin.user.edit', compact('editUser', 'roles', 'roleList'));
     }
 
     /**
@@ -99,21 +126,42 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
+
         try {
             $updateUser = $this->userRepository->find($id);
 
-            $data = $request->only('name', 'email', 'avatar', 'address', 'phone', 'status');
-            if ($request->hasFile('avatar')) {
-                Storage::delete(config('site.user.image') . $updateUser->avatar);
-                $request->avatar->store(config('site.user.image'));
-                $data['avatar'] = $request->avatar->hashName();
+            if (!empty($request->avatar)) {
+                
+                $data = $request->all();
+
+                if ($request->hasFile('avatar')) {
+                    Storage::delete(config('site.user.image') . $updateUser->avatar);
+                    $request->avatar->store(config('site.user.image'));
+                    $data['avatar'] = $request->avatar->hashName();
+                } else {
+                    $img_avatar = $request->avatar;
+                    $result = $this->userRepository->ImageUpdate($img_avatar);
+                    $data['avatar'] = $result;
+                }
+            }else {
+                $data = $request->only('name', 'email', 'address', 'phone', 'status');
             }
-        
+
+            if (!empty($request->role_id)) {
+                $arrayRole = rtrim($request->role_id, ',');
+                $check = explode(',', $arrayRole);
+                $updateUser->roles()->sync($check);
+            }else {
+                
+                $updateUser->roles()->sync($request->role_id);
+            }
+
             $this->userRepository->update($data, $id);
 
             return redirect()->route('user.index'); 
+
         } catch (Exception $e) {
             
             return redirect()->back();
@@ -132,5 +180,6 @@ class UserController extends Controller
 
         return response()->json($data);
     }
+
 
 }

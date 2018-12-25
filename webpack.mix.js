@@ -18,12 +18,12 @@ mix.js('resources/assets/js/app.js', 'public/js')
 mix.js('resources/assets/js/cropper-image.js', 'public/js');
 mix.js('resources/assets/js/userAjax.js', 'public/js');
 
-const WebpackShellPlugin = require('webpack-shell-plugin');
-mix.webpackConfig({
-    plugins:
-    [
-        new WebpackShellPlugin({onBuildStart:['php artisan lang:js --quiet'], onBuildEnd:[]})
-    ]
-});
+// const WebpackShellPlugin = require('webpack-shell-plugin');
+// mix.webpackConfig({
+//     plugins:
+//     [
+//         new WebpackShellPlugin({onBuildStart:['php artisan lang:js --quiet'], onBuildEnd:[]})
+//     ]
+// });
 
 mix.version();

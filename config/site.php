@@ -7,6 +7,7 @@ return
 
 	'user' => [
         'image' => 'public/user/',
-        'display-image' => 'storage/user/'
+        'display-image' => 'storage/user/',
+        'base64' => '/app/public/user/',
     ],
 ];

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
+use Session;
 class LoginController extends Controller
 {
     public function login()
@@ -33,8 +34,10 @@ class LoginController extends Controller
             'status' => 1,
         );
         if (Auth::attempt($login)) {
+
             return redirect()->route('dashboard');
         } else {
+
             return redirect()->back()->with('danger', 'login failed, account does not exist..!');
         }
     }

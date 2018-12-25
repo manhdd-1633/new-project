@@ -7,7 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>INSPINIA | Dashboard</title>
     @routes()
+    
    @include('admin.layout.css')
+
 </head>
 <body>
     <div id="wrapper">

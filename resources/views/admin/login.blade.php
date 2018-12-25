@@ -31,6 +31,9 @@
             <div class="col-md-6">
                 <div class="ibox-content">
                     {!! Form::open(['method' => 'POST', 'url' => route('login'), 'files' => true, 'class' => 'm-t']) !!}
+                        @if (Session::has('danger'))
+                            <p class="alert alert-danger">{{ Session::get('danger') }}</p>
+                        @endif
                         <div class="form-group">
                             {!!  Form::email( 'email','',[ 'class'=>'form-control','placeholder'=>'email','required'=>'' ]) !!}
                         </div>
