@@ -47,7 +47,7 @@ function previewFile(file) {
         let myfile = e.target.result;
         let ext = myfile.split(';');
         let ext2 = ext[0].split('/');
-        if(ext2[1] == "jpg" || ext2[1] == "png" || ext2[1] == "jpeg"){
+        if(ext2[1] == "jpg" || ext2[1] == "png" || ext2[1] == "jpeg" || ext2[1]  == "pdf"){
             $('#avatar-review').attr('src', ''+ e.target.result +'');
             $('#avatar-review').hide();
             $('#avatar-hidden').attr('value', e.target.result);

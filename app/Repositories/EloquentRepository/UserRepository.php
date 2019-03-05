@@ -4,6 +4,7 @@ namespace App\Repositories\EloquentRepository;
 use App\Models\User;
 use App\Repositories\EloquentRepository;
 use App\Repositories\InterfaceRepository\UserRepositoryInterface;
+use Auth;
 
 class UserRepository extends EloquentRepository implements UserRepositoryInterface
 {
@@ -27,4 +28,17 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
 
         return $imageName;
     }
+
+    // public function checkIsAdmin ()
+    // {
+    //     $user = Auth::user();
+ 
+    //     if ($user->can('create', User::class)) {
+    //         return view('admin.user.add', compact('roles', 'roleList'));
+    //     } else {
+    //       echo 'Not Authorized';
+    //     }
+     
+    //     exit;
+    // }
 }

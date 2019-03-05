@@ -33,11 +33,12 @@ class LoginController extends Controller
             'password' => $request->password,
             'status' => 1,
         );
+
         if (Auth::attempt($login)) {
 
             return redirect()->route('dashboard');
         } else {
-
+          
             return redirect()->back()->with('danger', 'login failed, account does not exist..!');
         }
     }

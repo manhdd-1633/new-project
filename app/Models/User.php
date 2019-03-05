@@ -34,9 +34,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    // protected $hidden = [
+    //     'password', 'remember_token',
+    // ];
 
     public function roles()
     {
@@ -60,5 +60,24 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($value);
     }
+
+    // public function isSuperAdmin() {
+    //     foreach ($this->roles as $role) {
+    //         if($role->id == 6) {
+    //             return true;
+    //         }
+    //     return false;
+    //     }
+        
+    // }
+
+    // public function isAdmin() {
+    //     foreach ($this->roles as $role) {
+    //         if($role->id == 7) {
+    //             return true;
+    //         }
+    //     return false;
+    //     }
+    // }
 
 }

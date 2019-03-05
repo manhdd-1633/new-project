@@ -14,6 +14,7 @@ use Exception;
 use App\Repositories\InterfaceRepository\UserRepositoryInterface;
 use App\Repositories\InterfaceRepository\RoleRepositoryInterface;
 use App\Http\Requests\UserRequest;
+use Auth;
 
 class UserController extends Controller
 {
@@ -44,9 +45,18 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = $this->roleRepository->pluck('name', 'id');
+       $user = Auth::user();
+ 
+        if ($user->can('create', User::class)) {
 
-        return view('admin.user.add', compact('roles', 'roleList'));
+            $roles = $this->roleRepository->pluck('name', 'id');
+            return view('admin.user.add', compact('roles', 'roleList'));
+
+        } else {
+          echo 'Not Authorized';
+        }
+     
+        exit;
     }
 
     /**
