@@ -32,6 +32,6 @@
 <script src="{{ asset('bower_components/lb-template/js/plugins/dataTables/datatables.min.js') }}"></script>
 <script src="{{ asset('bower_components/lb-template/js/plugins/cropper/cropper.min.js') }}"></script>
 
-<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 
 
