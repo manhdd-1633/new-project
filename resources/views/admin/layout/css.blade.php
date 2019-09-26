@@ -11,4 +11,4 @@
 
 <link rel="stylesheet" href="{{ asset('bower_components/sweetalert2/dist/sweetalert2.min.css') }}">
 <link href="{{ asset('bower_components/lb-template/css/style.css') }}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
