@@ -336,16 +336,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.7.1",
+            "version": "1.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1"
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
-                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
                 "shasum": ""
             },
             "require": {
@@ -378,7 +378,11 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2018-03-08T01:11:30+00:00"
+            "support": {
+                "issues": "https://github.com/erusev/parsedown/issues",
+                "source": "https://github.com/erusev/parsedown/tree/1.7.x"
+            },
+            "time": "2019-12-30T22:54:17+00:00"
         },
         {
             "name": "fideloper/proxy",
@@ -3613,61 +3617,6 @@
     ],
     "packages-dev": [
         {
-            "name": "andywer/js-localization",
-            "version": "dev-laravel-5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/andywer/laravel-js-localization.git",
-                "reference": "7f8636135ce425c9684b0b6b7225492fa544127d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/andywer/laravel-js-localization/zipball/7f8636135ce425c9684b0b6b7225492fa544127d",
-                "reference": "7f8636135ce425c9684b0b6b7225492fa544127d",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "5.x",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9.4",
-                "orchestra/testbench": "3.0.*",
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "extra": {
-                "component": "package",
-                "frameworks": [
-                    "Laravel 5"
-                ]
-            },
-            "autoload": {
-                "psr-4": {
-                    "JsLocalization\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andy Wermke",
-                    "email": "andy@dev.next-step-software.com"
-                }
-            ],
-            "description": "Laravel package to provide localizations to the Javascript code.",
-            "keywords": [
-                "javascript",
-                "laravel",
-                "localization",
-                "messages",
-                "translation"
-            ],
-            "time": "2018-08-30T11:35:49+00:00"
-        },
-        {
             "name": "beyondcode/laravel-dump-server",
             "version": "1.2.2",
             "source": {
@@ -5433,5 +5382,6 @@
     "platform": {
         "php": "^7.1.3"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
 }
